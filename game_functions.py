@@ -5,7 +5,16 @@ pygame.init()
 
 SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
+KEYS = pygame.key.get_pressed()
+
 gridSquareList = []
+
+class Button:
+    def __init__(self,unselectedRect,selectedRect,selectedText,unselectedText):
+        self.unselectedRect = unselectedRect
+        self.selectedRect = selectedRect
+        self.selectedText = selectedText
+        self.unselectedText = unselectedText
 
 def create_grid():
     for x in range(0, WINDOW_WIDTH - 80, GRIDSQUARESIZE):
@@ -16,8 +25,8 @@ def create_grid():
             pygame.draw.rect(SCREEN, GRASS, gridSquare)
 
 def mouse_square():
-    KEYS = pygame.key.get_pressed()
     global MOUSESQUAREVAR
+    KEYS = pygame.key.get_pressed()
 
     if KEYS[pygame.K_d] and MOUSESQUAREVAR.right < 720:
         time.sleep(0.25)
@@ -42,6 +51,7 @@ cycleCounter = 0
 def cycle_buildings():
     global selectedBuilding, cycleCounter, buildingOptions, moneyNeeded, incomeGenerated
     KEYS = pygame.key.get_pressed()
+
     if KEYS[pygame.K_RIGHT]:
         time.sleep(0.25)
         try:
@@ -86,8 +96,7 @@ def check_double_build():
             doubleBuildAttempt = True
 
 def construction_func():
-    global CONSTRUCTBUTTONSELECTED, houseCoords, CONSTRUCTBUTTON, TREASURY, doubleBuildAttempt, roadCoords, INCOME
-    #print(houseCoords)
+    global houseCoords, CONSTRUCTBUTTON, TREASURY, doubleBuildAttempt, roadCoords, INCOME
     KEYS = pygame.key.get_pressed()
     instructionTextRect.center = (400, 600)
     SCREEN.blit(INSTRUCTIONTEXT, instructionTextRect)
@@ -122,14 +131,7 @@ def construction_func():
 
 timer = 0
 def count_sec():
-    global timer, INCOME, TREASURY, incomeTextRect, treasuryTextRect, incomeText, treasuryText
-    incomeText = FONTTYPE.render(f"INCOME: ${INCOME} every 3 seconds", True, BLACK)
-    incomeTextRect = incomeText.get_rect()
-    treasuryText = FONTTYPE.render(f"TREASURY: ${TREASURY}", True, BLACK)
-    treasuryTextRect = treasuryText.get_rect()
-    incomeTextRect.topleft = (120, 20)
-    treasuryTextRect.topleft = (20, 20)
-    SCREEN.blit(treasuryText, treasuryTextRect), SCREEN.blit(incomeText, incomeTextRect)
+    global timer, INCOME, TREASURY
     if timer < 1000:
         timer += 1
 
@@ -171,9 +173,10 @@ def check_save():
             print("Invalid")
             continue
 
-class Button:
-    def __init__(self,unselectedRect,selectedRect,selectedText,unselectedText):
-        self.unselectedRect = unselectedRect
-        self.selectedRect = selectedRect
-        self.selectedText = selectedText
-        self.unselectedText = unselectedText
+ecoTextRect = HEADINGFONT.render("Financial Report",True,BLACK).get_rect()
+ecoTextRect.center = (360,120)
+def create_economy_page():
+    pygame.draw.rect(SCREEN,DARKWHITE,pygame.Rect(80,80,560,640))
+    SCREEN.blit(HEADINGFONT.render("Financial Report",True,BLACK),ecoTextRect)
+    SCREEN.blit(HEADINGFONT.render(f"Treasury: {TREASURY}",True,BLACK),(80,160))
+    SCREEN.blit(HEADINGFONT.render(f"Income: {INCOME}",True,BLACK),(80,240))

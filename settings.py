@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 
 RED = (255, 100, 100)
-GREEN = (0, 255, 0)
+GREEN = (0, 80, 0)
 GRASS = (50, 150, 50)
 BLUE = (100, 100, 255)
 BLACK = (0, 0, 0)
@@ -26,6 +26,7 @@ BUILDINGOPTIONS = ["ROADMODELONE", "HOUSEMODELONE"]
 
 TREASURY = 100
 
+HEADINGFONT = pygame.font.Font("freesansbold.ttf", 36)
 FONTTYPE = pygame.font.Font("freesansbold.ttf", 9)
 
 MOUSESQUAREVAR = pygame.Rect(0, 40, GRIDSQUARESIZE, GRIDSQUARESIZE)

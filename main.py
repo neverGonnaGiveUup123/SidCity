@@ -21,14 +21,23 @@ constructButton = game_functions.Button(
     FONTTYPE.render("Backspace to exit", True, BLACK),
     FONTTYPE.render("Construct", True, BLACK)
     )
-
 checkConstructionButton = [None]
-
 CB_unselectedTextRect = constructButton.unselectedText.get_rect()
 CB_unselectedTextRect.center = constructButton.unselectedRect.center
-
 CB_selectedTextRect = constructButton.selectedText.get_rect()
 CB_selectedTextRect.center = constructButton.selectedRect.center
+
+economyButton = game_functions.Button(
+    pygame.Rect(720,160,80,80),
+    pygame.Rect(720,160,80,80),
+    FONTTYPE.render("Backspace to exit", True, BLACK),
+    FONTTYPE.render("Economy",True,BLACK)
+)
+checkEconomyButton = [None]
+EB_unselectedTextRect = economyButton.unselectedText.get_rect()
+EB_unselectedTextRect.center = economyButton.unselectedRect.center
+EB_selectedTextRect = economyButton.selectedText.get_rect()
+EB_selectedTextRect.center = economyButton.selectedRect.center
 
 running = True
 while running:
@@ -48,26 +57,33 @@ while running:
     if constructButton.unselectedRect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]) and pygame.mouse.get_pressed() == (1, 0, 0):
         checkConstructionButton[0] = True
         time.sleep(0.25)
-
     if KEYS[pygame.K_BACKSPACE]:
         checkConstructionButton[0] = None
-
     if checkConstructionButton[0] == True:
         pygame.draw.rect(SCREEN,BLUE,constructButton.selectedRect)
         SCREEN.blit(constructButton.selectedText,CB_selectedTextRect)
-
         game_functions.cycle_buildings()
-
         game_functions.mouse_square()
-
         game_functions.construction_func()
-
     elif checkConstructionButton[0] != True:
         pygame.draw.rect(SCREEN,RED,constructButton.unselectedRect)
         SCREEN.blit(constructButton.unselectedText,CB_unselectedTextRect)
     
     [SCREEN.blit(HOUSEMODELONE, i) for i in houseCoords]
     [SCREEN.blit(ROADMODELONE, i) for i in roadCoords]
+
+    if economyButton.unselectedRect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]) and pygame.mouse.get_pressed() == (1, 0, 0):
+        checkEconomyButton[0] = True
+        time.sleep(0.25)
+    if KEYS[pygame.K_BACKSPACE]:
+        checkEconomyButton[0] = None
+    if checkEconomyButton[0] == True:
+        pygame.draw.rect(SCREEN,BLUE,economyButton.selectedRect)
+        SCREEN.blit(economyButton.selectedText,EB_selectedTextRect)
+        game_functions.create_economy_page()
+    elif checkEconomyButton[0] != True:
+        pygame.draw.rect(SCREEN,GREEN,economyButton.unselectedRect)
+        SCREEN.blit(economyButton.unselectedText,EB_unselectedTextRect)
 
     menuButton = pygame.image.load("pause_button.png")
     menuButtonRect = menuButton.get_rect()
