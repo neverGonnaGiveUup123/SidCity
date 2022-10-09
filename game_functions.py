@@ -99,7 +99,6 @@ def construction_func():
     global houseCoords, CONSTRUCTBUTTON, TREASURY, doubleBuildAttempt, roadCoords, INCOME
     KEYS = pygame.key.get_pressed()
     instructionTextRect.center = (400, 600)
-    SCREEN.blit(INSTRUCTIONTEXT, instructionTextRect)
 
     if KEYS[pygame.K_SPACE]:
         time.sleep(0.25)
@@ -123,10 +122,12 @@ def construction_func():
     buildingInfoText = FONTTYPE.render(f"Selected building: {selectedBuilding}, cost: ${moneyNeeded}, generates: ${incomeGenerated}",True,BLACK)
     buildingInfoTextRect = buildingInfoText.get_rect()
     buildingInfoTextRect.center = (400, 620)
-    SCREEN.blit(buildingInfoText, buildingInfoTextRect)
 
     [SCREEN.blit(HOUSEMODELONE, i) for i in houseCoords]
     [SCREEN.blit(ROADMODELONE, i) for i in roadCoords]
+
+    SCREEN.blit(INSTRUCTIONTEXT, instructionTextRect)
+    SCREEN.blit(buildingInfoText, buildingInfoTextRect)
 
 
 timer = 0

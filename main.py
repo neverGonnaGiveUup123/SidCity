@@ -54,6 +54,9 @@ while running:
 
     game_functions.create_grid()
 
+    [SCREEN.blit(HOUSEMODELONE, i) for i in houseCoords]
+    [SCREEN.blit(ROADMODELONE, i) for i in roadCoords]
+
     if constructButton.unselectedRect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]) and pygame.mouse.get_pressed() == (1, 0, 0):
         checkConstructionButton[0] = True
         time.sleep(0.25)
@@ -68,9 +71,6 @@ while running:
     elif checkConstructionButton[0] != True:
         pygame.draw.rect(SCREEN,RED,constructButton.unselectedRect)
         SCREEN.blit(constructButton.unselectedText,CB_unselectedTextRect)
-    
-    [SCREEN.blit(HOUSEMODELONE, i) for i in houseCoords]
-    [SCREEN.blit(ROADMODELONE, i) for i in roadCoords]
 
     if economyButton.unselectedRect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]) and pygame.mouse.get_pressed() == (1, 0, 0):
         checkEconomyButton[0] = True
