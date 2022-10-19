@@ -1,5 +1,5 @@
 from settings import *
-import time,pygame,json
+import time,pygame,json,os
 
 pygame.init()
 
@@ -15,6 +15,11 @@ class Button:
         self.selectedRect = selectedRect
         self.selectedText = selectedText
         self.unselectedText = unselectedText
+    
+    # def get_text_rect(self):
+    #     return self.selectedText.get_rect()
+
+    
 
 def create_grid():
     for x in range(0, WINDOW_WIDTH - 80, GRIDSQUARESIZE):
@@ -181,3 +186,69 @@ def create_economy_page():
     SCREEN.blit(HEADINGFONT.render("Financial Report",True,BLACK),ecoTextRect)
     SCREEN.blit(HEADINGFONT.render(f"Treasury: {TREASURY}",True,BLACK),(80,160))
     SCREEN.blit(HEADINGFONT.render(f"Income: {INCOME}",True,BLACK),(80,240))
+
+def pause_screen():
+    while True:
+        pygame.event.get()
+        SCREEN.fill(GREY)
+
+        quitButton = Button(pygame.Rect(200,400,400,50),pygame.Rect(205,405,390,40),HEADINGFONT.render("Quit",True,BLACK),None)
+        pygame.draw.rect(SCREEN,WHITE,quitButton.unselectedRect)
+        qbTextRect = quitButton.selectedText.get_rect()
+        qbTextRect.center = (400,425)
+
+        saveButton = Button(pygame.Rect(200,350,400,50),pygame.Rect(205,355,390,40),HEADINGFONT.render("Save",True,BLACK),None)
+        pygame.draw.rect(SCREEN,WHITE,saveButton.unselectedRect)
+        sbTextRect = saveButton.selectedText.get_rect()
+        sbTextRect.center = (400,375)
+
+        SCREEN.blit(quitButton.selectedText,qbTextRect)
+        SCREEN.blit(saveButton.selectedText,sbTextRect)
+
+        if pygame.mouse.get_pos()[0] >= 200 and pygame.mouse.get_pos()[0] <= 600:
+            if pygame.mouse.get_pos()[1] >= 400 and pygame.mouse.get_pos()[1] <= 450:
+                pygame.draw.rect(SCREEN,DARKWHITE,quitButton.selectedRect)
+                SCREEN.blit(quitButton.selectedText,qbTextRect)
+                if pygame.mouse.get_pressed() == (1,0,0):
+                    quit()
+        if pygame.mouse.get_pos()[0] >= 200 and pygame.mouse.get_pos()[0] <= 600:
+            if pygame.mouse.get_pos()[1] >= 350 and pygame.mouse.get_pos()[1] <= 400:
+                pygame.draw.rect(SCREEN,DARKWHITE,saveButton.selectedRect)
+                SCREEN.blit(saveButton.selectedText,sbTextRect)
+                SAVEVARIABLES = dict(savedIncome=INCOME,savedTreasury=TREASURY,savedHouses=houseCoords,savedRoads=roadCoords)
+                if pygame.mouse.get_pressed() == (1,0,0):
+                    while True:
+                        save_input = input("Do you want to save? Y/N ")
+                        if save_input.upper() == "Y":
+                            try:
+                                filename = input("Enter save name: ")
+                                file = open(f"{filename}.json", "x")
+                            except FileExistsError:
+                                raw_input = input(
+                                    "This file already exists! Are you sure you want to overwrite it? Y/N "
+                                )
+                                if raw_input.upper() == "Y":
+                                    if os.path.exists(f"{filename}.json"):
+                                        os.remove(f"{filename}.json")
+                                        with open(f"{filename}.json", "w") as save:
+                                            json.dump(SAVEVARIABLES, save)
+                                    break
+                                elif raw_input.upper() == "N":
+                                    continue
+                                else:
+                                    print("Invalid")
+                                    continue
+                            else:
+                                json.dump(SAVEVARIABLES, file)
+                                file.close()
+                                break
+                        elif save_input.upper() == "N":
+                            break
+                        else:
+                            print("Invalid")
+                            continue
+                    pygame.quit()
+        try:
+            pygame.display.update()
+        except Exception:
+            quit()
