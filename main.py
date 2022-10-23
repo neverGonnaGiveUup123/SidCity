@@ -15,14 +15,13 @@ menuButtonSelected = [None]
 
 pause = [None]
 
-print("E")
 constructButton = game_functions.Button(
     pygame.Rect(720, 80, 80, 80),
     pygame.Rect(720, 80, 80, 80),
     FONTTYPE.render("Backspace to exit", True, BLACK),
     FONTTYPE.render("Construct", True, BLACK)
     )
-print("Eeeee")
+
 checkConstructionButton = [None]
 CB_unselectedTextRect = constructButton.unselectedText.get_rect()
 CB_unselectedTextRect.center = constructButton.unselectedRect.center
