@@ -3,6 +3,7 @@ import pygame
 pygame.init()
 
 RED = (255, 100, 100)
+DARKRED = (255,50,50)
 GREEN = (0, 80, 0)
 GRASS = (50, 150, 50)
 BLUE = (100, 100, 255)

@@ -149,35 +149,105 @@ numHouses = 0
 
 def check_save():
     global TREASURY, INCOME
-    while True:
-        user_input = input("Do you want to open a saved game? Y/N ")
-        if user_input.upper() == "Y":
-            try:
-                user_input = input("Enter name of save game: ")
-                with open(f"{user_input}.json", "r") as file:
-                    save_game = json.load(file)
-                    TREASURY = save_game["savedTreasury"]
-                    for coords in save_game["savedHouses"]:
-                        houseCoords.append(tuple(coords))
-                    for coords in save_game["savedRoads"]:
-                        roadCoords.append(tuple(coords))
-                    for houses in houseCoords:
-                        INCOME += 10
-                    break
-            except FileNotFoundError:
-                print(
-                    "Sorry, this file could not be found. Make sure you spelled it correctly!"
-                )
-                continue
-            except json.decoder.JSONDecodeError:
-                print("Corrupted file. You probably did something stupid.")
-                continue
+    playButton = Button(
+        pygame.Rect(200,400,400,100),
+        pygame.Rect(205,405,390,90),
+        HEADINGFONT.render("Play",True,BLACK),
+        None
+        )
+    pbTextRect = playButton.selectedText.get_rect()
+    pbTextRect.center = (400,450)
 
-        elif user_input.upper() == "N":
+    yesButton = Button(
+        pygame.Rect(100,450,300,50),
+        pygame.Rect(105,455,290,40),
+        HEADINGFONT.render("Yes",True,BLACK),
+        None
+    )
+    yBTextRect = yesButton.selectedText.get_rect()
+    yBTextRect.center = (250,475)
+
+    loaded = False
+    while True:
+        pygame.event.get()
+        KEYS = pygame.key.get_pressed()
+        SCREEN.fill(GRASS)
+        pygame.draw.rect(SCREEN,RED,playButton.unselectedRect)
+        SCREEN.blit(playButton.selectedText,pbTextRect)
+        if KEYS[pygame.K_0]:
             break
-        else:
-            print("Invalid")
-            continue
+
+        if pygame.mouse.get_pos()[0] >= 200 and pygame.mouse.get_pos()[0] <= 600:
+            if pygame.mouse.get_pos()[1] >= 400 and pygame.mouse.get_pos()[1] <= 500:
+                pygame.draw.rect(SCREEN,DARKRED,playButton.selectedRect)
+                SCREEN.blit(playButton.selectedText,pbTextRect)
+                pygame.display.update()
+                if pygame.mouse.get_pressed() == (1,0,0):
+                    while True:
+                        pygame.event.get()
+                        SCREEN.fill(GRASS)
+                        SCREEN.blit(HEADINGFONT.render("Do you want to load a saved game?",True,BLACK),(100,400))
+                        pygame.draw.rect(SCREEN,RED,yesButton.unselectedRect)
+                        SCREEN.blit(yesButton.selectedText,yBTextRect)
+                        if pygame.mouse.get_pos()[0] >= 100 and pygame.mouse.get_pos()[0] <= 300:
+                            if pygame.mouse.get_pos()[1] >= 450 and pygame.mouse.get_pos()[1] <= 500:
+                                pygame.draw.rect(SCREEN,DARKRED,yesButton.selectedRect)
+                                SCREEN.blit(yesButton.selectedText,yBTextRect)
+                                if pygame.mouse.get_pressed() == (1,0,0):
+                                    try:
+                                        with open("saveFile.json", "r") as file:
+                                            save_game = json.load(file)
+                                            TREASURY = save_game["savedTreasury"]
+                                            for coords in save_game["savedHouses"]:
+                                                houseCoords.append(tuple(coords))
+                                            for coords in save_game["savedRoads"]:
+                                                roadCoords.append(tuple(coords))
+                                            for houses in houseCoords:
+                                                INCOME += 10
+                                            break
+                                    except FileNotFoundError:
+                                        print(
+                                            "Sorry, this file could not be found. Make sure you spelled it correctly!"
+                                        )
+                                    except json.decoder.JSONDecodeError:
+                                        print("Corrupted file. You probably did something stupid.")
+                                    finally:
+                                        loaded = True
+                                        break
+                                        
+                        pygame.display.update()
+        if loaded == True:
+            break
+
+        pygame.display.update()
+        # user_input = input("Do you want to open a saved game? Y/N ")
+        # if user_input.upper() == "Y":
+        #     try:
+        #         user_input = input("Enter name of save game: ")
+        #         with open(f"{user_input}.json", "r") as file:
+        #             save_game = json.load(file)
+        #             TREASURY = save_game["savedTreasury"]
+        #             for coords in save_game["savedHouses"]:
+        #                 houseCoords.append(tuple(coords))
+        #             for coords in save_game["savedRoads"]:
+        #                 roadCoords.append(tuple(coords))
+        #             for houses in houseCoords:
+        #                 INCOME += 10
+        #             break
+        #     except FileNotFoundError:
+        #         print(
+        #             "Sorry, this file could not be found. Make sure you spelled it correctly!"
+        #         )
+        #         continue
+        #     except json.decoder.JSONDecodeError:
+        #         print("Corrupted file. You probably did something stupid.")
+        #         continue
+
+        # elif user_input.upper() == "N":
+        #     break
+        # else:
+        #     print("Invalid")
+        #     continue
 
 ecoTextRect = HEADINGFONT.render("Financial Report",True,BLACK).get_rect()
 ecoTextRect.center = (360,120)
@@ -235,34 +305,3 @@ def pause_screen():
         if counter >= 1000:
             counter = 0
         pygame.display.update()
-                    # while True:
-                    #     save_input = input("Do you want to save? Y/N ")
-                    #     if save_input.upper() == "Y":
-                    #         try:
-                    #             filename = input("Enter save name: ")
-                    #             file = open(f"{filename}.json", "x")
-                    #         except FileExistsError:
-                    #             raw_input = input(
-                    #                 "This file already exists! Are you sure you want to overwrite it? Y/N "
-                    #             )
-                    #             if raw_input.upper() == "Y":
-                    #                 if os.path.exists(f"{filename}.json"):
-                    #                     os.remove(f"{filename}.json")
-                    #                     with open(f"{filename}.json", "w") as save:
-                    #                         json.dump(SAVEVARIABLES, save)
-                    #                 break
-                    #             elif raw_input.upper() == "N":
-                    #                 continue
-                    #             else:
-                    #                 print("Invalid")
-                    #                 continue
-                    #         else:
-                    #             json.dump(SAVEVARIABLES, file)
-                    #             file.close()
-                    #             break
-                    #     elif save_input.upper() == "N":
-                    #         break
-                    #     else:
-                    #         print("Invalid")
-                    #         continue
-                    # pygame.quit()

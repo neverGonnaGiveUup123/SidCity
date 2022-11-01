@@ -108,36 +108,4 @@ print("Number of houses:", numHouses)
 print("INCOME:", INCOME)
 print("Bank:", TREASURY)
 
-
-# while True:
-#     save_input = input("Do you want to save? Y/N ")
-#     if save_input.upper() == "Y":
-#         try:
-#             filename = input("Enter save name: ")
-#             file = open(f"{filename}.json", "x")
-#         except FileExistsError:
-#             raw_input = input(
-#                 "This file already exists! Are you sure you want to overwrite it? Y/N "
-#             )
-#             if raw_input.upper() == "Y":
-#                 if os.path.exists(f"{filename}.json"):
-#                     os.remove(f"{filename}.json")
-#                     with open(f"{filename}.json", "w") as save:
-#                         json.dump(SAVEVARIABLES, save)
-#                 break
-#             elif raw_input.upper() == "N":
-#                 continue
-#             else:
-#                 print("Invalid")
-#                 continue
-#         else:
-#             json.dump(SAVEVARIABLES, file)
-#             file.close()
-#             break
-#     elif save_input.upper() == "N":
-#         break
-#     else:
-#         print("Invalid")
-#         continue
-
 pygame.quit()
