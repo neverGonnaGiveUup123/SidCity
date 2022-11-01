@@ -109,3 +109,4 @@ print("INCOME:", INCOME)
 print("Bank:", TREASURY)
 
 pygame.quit()
+print("e")
